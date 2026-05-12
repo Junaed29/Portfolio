@@ -28,7 +28,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     // This message will appear in the browser's console (press F12 to see it)
     console.log('Portfolio application starting...');
-    
+
+    // STEP 0: Wire up the theme toggle (the head script already applied the saved theme)
+    if (window.initializeTheme) {
+        initializeTheme();
+    }
+
     // STEP 1: Initialize profile information
     // This function comes from profile.js and adds your name, photo, etc. to the page
     initializeProfile();
@@ -62,7 +67,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // STEP 8: Check if styles are properly loaded
     checkStylesLoaded();
-    
+
+    // STEP 9: Footer year
+    const footerYearEl = document.querySelector('.footer-year');
+    if (footerYearEl) footerYearEl.textContent = new Date().getFullYear();
+
     // This message will appear in the browser's console when everything is ready
     console.log('Portfolio application initialized successfully!');
 });

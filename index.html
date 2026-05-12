@@ -1,138 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Basic metadata for character encoding and responsive layout -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Theme color for mobile devices (will color the browser UI) -->
     <meta name="theme-color" content="#6a3de8">
-    <!-- Page title - this will be updated by profile.js -->
-    <title>Portfolio</title> <!-- Will be dynamically updated by JavaScript -->
-    <!-- Link to CSS file - this contains all the styling rules -->
+    <meta name="description" content="Junaed Muhammad Chowdhury, Mobile Engineer with 5+ years across native iOS, native Android, and Flutter, specialising in on-device AI/ML. M.Sc. UTM (4.00 GPA). Open to mid-to-senior remote roles.">
+    <meta name="author" content="Junaed Muhammad Chowdhury">
+
+    <!-- Open Graph for richer link previews when shared with recruiters -->
+    <meta property="og:title" content="Junaed Muhammad Chowdhury / Mobile Engineer / iOS, Android, Flutter, On-Device AI">
+    <meta property="og:description" content="5+ years building production mobile apps and on-device AI. Currently at Theta Edge Berhad. M.Sc. UTM (4.00 GPA).">
+    <meta property="og:type" content="website">
+
+    <title>Junaed Muhammad Chowdhury / Mobile Engineer</title>
+
+    <!--
+        Theme bootstrap (must run before stylesheets and body render, otherwise the page flashes
+        light before flipping to dark for users who prefer dark mode).
+        Reads localStorage["theme"] in {"light","dark","system"} (default "system"),
+        resolves "system" against prefers-color-scheme, and sets data-theme="dark" on <html>
+        if dark is effective. Light stays unmarked because the CSS default is light.
+    -->
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('theme');
+                var pref = (stored === 'light' || stored === 'dark') ? stored : 'system';
+                var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var effective = (pref === 'system') ? (systemDark ? 'dark' : 'light') : pref;
+                if (effective === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+                document.documentElement.setAttribute('data-theme-pref', pref);
+            } catch (e) { /* localStorage may be blocked, fall through to light */ }
+        })();
+    </script>
+
+    <!-- Distinctive type system: Space Grotesk for display, Inter for body, JetBrains Mono for code/numbers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Font Awesome for icons (loaded from CDN - Content Delivery Network) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header Section - Fixed at the top with name and navigation -->
+    <!-- Header: name on the left, navigation on the right. Contact info renders below name. -->
     <header>
-        <!-- Left side of header with name and contact info -->
         <div class="header-left">
-            <!-- Requirement 1: Styled name appears on the top-left of the page -->
-            <!-- Name will be set by JavaScript from profile.js -->
             <h1></h1>
-            <!-- Contact info will be set by JavaScript from profile.js -->
+            <p class="header-title"></p>
             <div class="contact-info">
-                <p><i class="fas fa-envelope"></i></p> <!-- Email with icon -->
-                <p><i class="fas fa-phone"></i></p> <!-- Phone with icon -->
+                <p><i class="fas fa-envelope"></i></p>
+                <p><i class="fas fa-phone"></i></p>
             </div>
         </div>
-        
-        <!-- Requirement 2: Navigation bar with 4 options -->
-        <!-- Navigation links - each points to a section below using ID links -->
-        <nav>
-            <ul>
-                <li><a href="#about" class="nav-link">About Me</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#recommendations" class="nav-link">Recommendations</a></li>
-            </ul>
-        </nav>
+
+        <div class="header-right">
+            <nav>
+                <ul>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#education" class="nav-link">Education</a></li>
+                    <li><a href="#recommendations" class="nav-link">Recommendations</a></li>
+                </ul>
+            </nav>
+
+            <!-- Three-state theme toggle: light / system / dark -->
+            <div class="theme-toggle" role="radiogroup" aria-label="Color theme">
+                <button type="button" data-theme-set="light" role="radio" aria-label="Light theme" title="Light">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                </button>
+                <button type="button" data-theme-set="system" role="radio" aria-label="Match system" title="System">
+                    <i class="fas fa-desktop" aria-hidden="true"></i>
+                </button>
+                <button type="button" data-theme-set="dark" role="radio" aria-label="Dark theme" title="Dark">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
     </header>
 
-    <!-- Main Content - Contains all section content -->
     <main>
-        <!-- Requirement 3: About Me Section -->
-        <!-- Section with ID "about" - navigation links point here -->
+        <!-- About Me / Hero -->
         <section id="about" class="about-section">
             <div class="profile-container">
-                <!-- Profile image container - image will be set by profile.js -->
                 <div class="profile-image">
-                    <img src="" alt=""> <!-- Image source will be set by JavaScript -->
+                    <img src="" alt="">
                 </div>
-                <!-- Profile text content - will be set by profile.js -->
                 <div class="profile-content">
-                    <h2><span class="wave-emoji">👋</span></h2> <!-- Greeting with wave emoji -->
-                    <p></p> <!-- Description will be set by JavaScript -->
+                    <div class="availability-pill"></div>
+                    <h2><span class="wave-emoji">👋</span></h2>
+                    <p class="profile-tagline"></p>
+                    <p class="profile-description text-justify"></p>
+                    <div class="profile-cta">
+                        <a href="#projects" class="cta-button cta-primary"><i class="fas fa-rocket"></i> View Projects</a>
+                        <a href="#" class="cta-button cta-secondary cta-email"><i class="fas fa-envelope"></i> Get in Touch</a>
+                        <a href="#" class="cta-button cta-ghost cta-linkedin" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="#" class="cta-button cta-ghost cta-github" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a>
+                    </div>
                 </div>
             </div>
+
+            <!-- Quick-glance stats for recruiters -->
+            <div class="profile-stats"></div>
         </section>
 
-        <!-- Requirement 4: Skills Section with logo and text -->
-        <!-- Section with ID "skills" - navigation links point here -->
-        <section id="skills" class="skills-section">
-            <h2>Skills</h2>
-            <!-- Skills container - will be filled by skills.js -->
-            <div class="skills-container">
-                <!-- Skills will be loaded dynamically by JavaScript from skills.js -->
-                <!-- Each skill will be a card with icon, name and experience level -->
+        <!-- Skills -->
+        <section id="skills" class="skills-section" data-index="// 02 / Stack">
+            <h2>What I build with</h2>
+            <p class="section-intro">Stack I ship with today, plus the deeper iOS and on-device-AI specialty.</p>
+            <div class="skills-container"></div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="projects-section" data-index="// 03 / Selected work">
+            <h2>Things I've shipped</h2>
+            <p class="section-intro">Selected production apps and personal projects. All App Store and GitHub links are live.</p>
+        </section>
+
+        <!-- Education -->
+        <section id="education" class="education-section" data-index="// 04 / Education">
+            <h2>Where I trained</h2>
+            <div class="education-list">
+                <article class="education-card education-card--primary">
+                    <div class="education-card-header">
+                        <h3>M.Sc. Software Engineering</h3>
+                        <span class="education-gpa">CGPA 4.00 / 4.00</span>
+                    </div>
+                    <p class="education-school">Universiti Teknologi Malaysia (UTM), Kuala Lumpur</p>
+                    <p class="education-dates">March 2025 to December 2026 (in progress)</p>
+                    <p class="education-detail">Perfect GPA across both completed semesters. Project Leader for the 6-person capstone team that delivered TFMS (Django 5 web app with full MIL-STD documentation set). Final semester is a 5-month industrial attachment at Theta Edge Berhad.</p>
+                </article>
+
+                <article class="education-card">
+                    <div class="education-card-header">
+                        <h3>B.Sc. Computer Science and Engineering</h3>
+                        <span class="education-gpa">CGPA 3.37 / 4.00</span>
+                    </div>
+                    <p class="education-school">Bangladesh Army University of Engineering and Technology (BAUET)</p>
+                    <p class="education-dates">2016 to January 2021</p>
+                    <p class="education-detail">Final-year thesis on classification of paddy-leaf diseases using applied machine learning and computer vision. 2nd Runner-Up at the 2nd Inter-University Project Fair (2019) for the Attendance Management System.</p>
+                </article>
+
+                <article class="education-card">
+                    <div class="education-card-header">
+                        <h3>100 Days of SwiftUI by Paul Hudson</h3>
+                        <span class="education-gpa">Completed</span>
+                    </div>
+                    <p class="education-school">Hacking with Swift</p>
+                    <p class="education-detail">Full SwiftUI curriculum widely used by professional iOS engineers. Currently also enrolled in Prime: Complete AI/ML Job Preparation (Python, NumPy, scikit-learn, PyTorch, Transformers, LLMs).</p>
+                </article>
             </div>
         </section>
 
-        <!-- Requirement 5: Projects Section -->
-        <!-- Section with ID "projects" - navigation links point here -->
-        <section id="projects" class="projects-section">
-            <h2>Projects</h2>
-            <!-- Projects will be loaded dynamically by JavaScript from projects.js -->
-            <!-- Each project will show title and description -->
-        </section>
+        <!-- Recommendations -->
+        <section id="recommendations" class="recommendations-section" data-index="// 05 / Kind words">
+            <h2>What collaborators say</h2>
+            <p class="section-intro">A few words from colleagues I have worked with.</p>
 
-        <!-- Requirement 6: Recommendations Section -->
-        <!-- Section with ID "recommendations" - navigation links point here -->
-        <section id="recommendations" class="recommendations-section">
-            <h2>Recommendations</h2>
-            
-            <!-- Container for recommendation cards -->
-            <div class="recommendations-container">
-                <!-- Recommendations will be loaded dynamically by JavaScript from recommendations.js -->
-                <!-- Each recommendation will be a card with quote and name -->
-            </div>
-            
-            <!-- Requirement 7: Add new recommendations to existing list -->
-            <!-- Form to add new recommendations -->
+            <div class="recommendations-container"></div>
+
             <div class="add-recommendation">
                 <h3>Leave a Recommendation</h3>
                 <form id="recommendationForm">
-                    <!-- Name input field (optional) -->
                     <div class="form-group">
-                        <input type="text" id="name" placeholder="Name (Optional)">
+                        <input type="text" id="name" placeholder="Name (Optional)" autocomplete="name">
                     </div>
-                    <!-- Message input field (required) -->
                     <div class="form-group">
                         <textarea id="message" placeholder="Message" required></textarea>
                     </div>
-                    <!-- Submit button -->
+                    <!-- Honeypot: humans cannot see this (off-screen). Bots that fill it get rejected by Web3Forms. -->
+                    <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
                     <button type="submit" class="btn-submit">Submit</button>
                 </form>
             </div>
         </section>
     </main>
 
-    <!-- Requirement 8: Home icon appears as specified -->
-    <!-- Back to top button - fixed position, appears when scrolled down -->
-    <a href="#" class="back-to-top">
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-block">
+                <span class="footer-label">Reach out</span>
+                <a href="mailto:junaed.dev@gmail.com">junaed.dev@gmail.com</a>
+                <a href="tel:+60113971407">+60 11-3971 4017</a>
+            </div>
+            <div class="footer-block">
+                <span class="footer-label">Find me</span>
+                <a href="https://linkedin.com/in/junaed29" target="_blank" rel="noopener">linkedin.com/in/junaed29</a>
+                <a href="https://github.com/Junaed29" target="_blank" rel="noopener">github.com/Junaed29</a>
+            </div>
+            <div class="footer-block">
+                <span class="footer-label">Based in</span>
+                <span>Kuala Lumpur, Malaysia</span>
+                <span>Open to remote, AU, DE</span>
+            </div>
+        </div>
+        <p class="footer-meta">&copy; <span class="footer-year"></span> Junaed Muhammad Chowdhury / hand-built with vanilla HTML, CSS, and JavaScript</p>
+    </footer>
+
+    <a href="#" class="back-to-top" aria-label="Back to top">
         <i class="fas fa-arrow-circle-up"></i>
     </a>
 
-    <!-- JavaScript modules - loaded in specific order -->
-    <!-- Each file has a specific purpose, keeping code organized -->
-    
-    <!-- Profile Module: Handles all user profile information -->
+    <script src="js/theme.js"></script>
     <script src="js/profile.js"></script>
-    
-    <!-- Skills Module: Manages the skills section -->
     <script src="js/skills.js"></script>
-    
-    <!-- Projects Module: Manages the projects section -->
     <script src="js/projects.js"></script>
-    
-    <!-- Recommendations Module: Manages the recommendations section and form -->
     <script src="js/recommendations.js"></script>
-    
-    <!-- Animations Module: Handles all animations and UI interactions -->
     <script src="js/animations.js"></script>
-    
-    <!-- Main Script: Orchestrates all the modules -->
     <script src="js/script.js"></script>
 </body>
 </html>
