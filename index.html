@@ -14,6 +14,28 @@
 
     <title>Junaed Muhammad Chowdhury / Mobile Engineer</title>
 
+    <!--
+        Theme bootstrap (must run before stylesheets and body render, otherwise the page flashes
+        light before flipping to dark for users who prefer dark mode).
+        Reads localStorage["theme"] in {"light","dark","system"} (default "system"),
+        resolves "system" against prefers-color-scheme, and sets data-theme="dark" on <html>
+        if dark is effective. Light stays unmarked because the CSS default is light.
+    -->
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('theme');
+                var pref = (stored === 'light' || stored === 'dark') ? stored : 'system';
+                var systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var effective = (pref === 'system') ? (systemDark ? 'dark' : 'light') : pref;
+                if (effective === 'dark') {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                }
+                document.documentElement.setAttribute('data-theme-pref', pref);
+            } catch (e) { /* localStorage may be blocked, fall through to light */ }
+        })();
+    </script>
+
     <!-- Distinctive type system: Space Grotesk for display, Inter for body, JetBrains Mono for code/numbers -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,15 +56,30 @@
             </div>
         </div>
 
-        <nav>
-            <ul>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#education" class="nav-link">Education</a></li>
-                <li><a href="#recommendations" class="nav-link">Recommendations</a></li>
-            </ul>
-        </nav>
+        <div class="header-right">
+            <nav>
+                <ul>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#education" class="nav-link">Education</a></li>
+                    <li><a href="#recommendations" class="nav-link">Recommendations</a></li>
+                </ul>
+            </nav>
+
+            <!-- Three-state theme toggle: light / system / dark -->
+            <div class="theme-toggle" role="radiogroup" aria-label="Color theme">
+                <button type="button" data-theme-set="light" role="radio" aria-label="Light theme" title="Light">
+                    <i class="fas fa-sun" aria-hidden="true"></i>
+                </button>
+                <button type="button" data-theme-set="system" role="radio" aria-label="Match system" title="System">
+                    <i class="fas fa-desktop" aria-hidden="true"></i>
+                </button>
+                <button type="button" data-theme-set="dark" role="radio" aria-label="Dark theme" title="Dark">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -165,6 +202,7 @@
         <i class="fas fa-arrow-circle-up"></i>
     </a>
 
+    <script src="js/theme.js"></script>
     <script src="js/profile.js"></script>
     <script src="js/skills.js"></script>
     <script src="js/projects.js"></script>

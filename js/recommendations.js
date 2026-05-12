@@ -30,11 +30,11 @@ console.log('Defining initialRecommendations array'); // DEBUG LOG
 const initialRecommendations = [
     {
         text: "Junaed is a highly talented iOS developer with a deep understanding of mobile architecture. During our collaboration, I was consistently impressed by his ability to translate complex requirements into smooth, intuitive user experiences. His SwiftUI skills are particularly strong, and he always goes the extra mile to deliver polished, scalable solutions.",
-        name: "David Miller"
+        name: "Abu Jafor Saleh"
     },
     {
         text: "It’s been a pleasure working with Junaed. He’s not only technically proficient but also an excellent communicator who understands project goals clearly. His experience in both Android and iOS development gives him a unique perspective when solving cross-platform challenges. I’d love to collaborate again in the future",
-        name: "Sarah Johnson"
+        name: "Sadia Tasnim"
     },
     {
         text: "Junaed joined our mobile team at a crucial phase, and his contributions were immediately felt. He quickly took ownership of core features, proactively suggested improvements, and delivered clean, maintainable code. His passion for mobile technology and continuous learning make him a valuable asset to any team.",

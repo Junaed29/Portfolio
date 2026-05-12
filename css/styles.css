@@ -3,36 +3,76 @@
 /* ===== GLOBAL STYLES ===== */
 /* :root defines CSS variables that can be used throughout the document */
 :root {
-    /* Distinctive palette — rich violet primary with an unexpected warm amber accent */
+    /* ===== STATIC (same in both themes) ===== */
     --primary-color: #6D28D9;
     --primary-hover: #5B21B6;
     --primary-dark: #4C1D95;
-    --primary-light: #EDE9FE;
-    --accent-color: #F59E0B;       /* Warm amber — used as a pop against violet */
-    --accent-soft: #FEF3C7;
+    --accent-color: #F59E0B;       /* Warm amber, used as a pop against violet */
     --mint: #10B981;               /* Reserved for "available" indicator */
-
-    --ink: #0F0B1F;                /* Near-black with violet undertone */
-    --text-color: #1F1A2E;
-    --text-muted: #6B6480;
-    --text-subtle: #948CA8;
-
-    --background-color: #FAFAF7;   /* Warm off-white — feels human, not white-on-white */
-    --surface: #FFFFFF;
-    --card-bg: #FFFFFF;
-    --card-shadow: 0 1px 2px rgba(15, 11, 31, 0.04), 0 12px 32px -8px rgba(109, 40, 217, 0.10);
-    --border-light: #EAE6F2;
-    --border-strong: #D4CCE6;
 
     /* Type system */
     --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
     --font-body: 'Inter', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
 
-    /* Animation timing variables */
+    /* Animation timing */
     --transition-slow: 0.5s;
     --transition-medium: 0.3s;
     --transition-fast: 0.15s;
+
+    /* ===== LIGHT THEME (default) ===== */
+    --bg: #FAFAF7;
+    --background-color: #FAFAF7;   /* alias kept for backwards compatibility */
+    --surface: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --surface-strong: #0F0B1F;     /* Header / footer / form-section bg. Stays dark in dark mode (slightly elevated). */
+    --text-on-strong: #FFFFFF;     /* Text color on top of --surface-strong */
+
+    --ink: #0F0B1F;                /* Strong text color + invertible CTA bg. Flips in dark mode. */
+    --text-on-ink: #FFFFFF;        /* Inverse of --ink — used for text on top of --ink. Flips in dark mode. */
+
+    --text-color: #1F1A2E;
+    --text-muted: #6B6480;
+    --text-subtle: #948CA8;
+
+    --primary-light: #EDE9FE;
+    --accent-soft: #FEF3C7;
+
+    --border-light: #EAE6F2;
+    --border-strong: #D4CCE6;
+
+    --grid-dot: rgba(109, 40, 217, 0.06);
+    --card-shadow: 0 1px 2px rgba(15, 11, 31, 0.04), 0 12px 32px -8px rgba(109, 40, 217, 0.10);
+
+    color-scheme: light;
+}
+
+/* ===== DARK THEME ===== */
+:root[data-theme="dark"] {
+    --bg: #0B0815;
+    --background-color: #0B0815;
+    --surface: #15101F;
+    --card-bg: #15101F;
+    --surface-strong: #16121F;     /* Slightly elevated dark, not pitch-black, gives header/footer a "raised" feel */
+    --text-on-strong: #F5F1FF;
+
+    --ink: #F5F1FF;                /* Flips: now light, so headings stay high-contrast and CTAs invert */
+    --text-on-ink: #0F0B1F;
+
+    --text-color: #E8E3F2;
+    --text-muted: #948CA8;
+    --text-subtle: #6B6480;
+
+    --primary-light: #251A3F;
+    --accent-soft: rgba(245, 158, 11, 0.14);
+
+    --border-light: #251D38;
+    --border-strong: #36284E;
+
+    --grid-dot: rgba(245, 158, 11, 0.05);
+    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+
+    color-scheme: dark;
 }
 
 * {
@@ -49,13 +89,32 @@ body {
     font-family: var(--font-body);
     line-height: 1.65;
     color: var(--text-color);
-    background-color: var(--background-color);
+    background-color: var(--bg);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Subtle dot grid — humanises the off-white background without feeling busy */
-    background-image: radial-gradient(circle at 1px 1px, rgba(109, 40, 217, 0.06) 1px, transparent 0);
+    /* Subtle dot grid, humanises the background without feeling busy */
+    background-image: radial-gradient(circle at 1px 1px, var(--grid-dot) 1px, transparent 0);
     background-size: 28px 28px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Smooth transition for theme swaps on a few key surfaces (kept narrow so animation-heavy pages do not feel sluggish) */
+header,
+.site-footer,
+.skill-card,
+.project,
+.education-card,
+.recommendation-card,
+.add-recommendation,
+.cta-button,
+.back-to-top,
+.tech-tag,
+.theme-toggle,
+.theme-toggle button {
+    transition-property: background-color, color, border-color, box-shadow, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
 }
 
 h1, h2, h3, h4, h5 {
@@ -71,8 +130,8 @@ h1, h2, h3, h4, h5 {
 
 /* ===== HEADER ===== */
 header {
-    background: var(--ink);
-    color: white;
+    background: var(--surface-strong);
+    color: var(--text-on-strong);
     padding: 22px 6%;
     display: flex;
     justify-content: space-between;
@@ -99,7 +158,7 @@ header::after {
     font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 2px;
-    color: white;
+    color: var(--text-on-strong);
     animation: fadeInDown 0.6s ease-out;
 }
 
@@ -752,8 +811,8 @@ section#about::before {
  * This includes inputs, text areas, and the submit button
  */
 .add-recommendation {
-    background: var(--ink);
-    color: white;
+    background: var(--surface-strong);
+    color: var(--text-on-strong);
     border-radius: 8px;
     padding: 40px 36px;
     box-shadow: none;
@@ -858,7 +917,7 @@ section#about::before {
 
 .btn-submit {
     background: var(--accent-color);
-    color: var(--ink);
+    color: #0F0B1F;
     border: none;
     border-radius: 6px;
     padding: 14px 32px;
@@ -875,7 +934,7 @@ section#about::before {
 }
 .btn-submit:hover {
     background: white;
-    color: var(--ink);
+    color: #0F0B1F;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px -8px rgba(245, 158, 11, 0.4);
 }
@@ -938,7 +997,7 @@ section#about::before {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    background: var(--ink);
+    background: var(--surface-strong);
     color: var(--accent-color);
     width: 48px;
     height: 48px;
@@ -971,7 +1030,7 @@ section#about::before {
 .back-to-top:hover {
     opacity: 1;
     background: var(--accent-color);
-    color: var(--ink);
+    color: #0F0B1F;
     transform: translateY(-3px);
     box-shadow: 0 12px 32px -8px rgba(245, 158, 11, 0.45);
 }
@@ -1417,13 +1476,13 @@ section#about::before {
 }
 .cta-primary {
     background: var(--ink);
-    color: white;
+    color: var(--text-on-ink);
     border-color: var(--ink);
 }
 .cta-primary:hover {
     background: var(--accent-color);
     border-color: var(--accent-color);
-    color: var(--ink);
+    color: #0F0B1F;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px -8px rgba(245, 158, 11, 0.5);
 }
@@ -1434,7 +1493,7 @@ section#about::before {
 }
 .cta-secondary:hover {
     background: var(--ink);
-    color: white;
+    color: var(--text-on-ink);
     transform: translateY(-2px);
 }
 .cta-ghost {
@@ -1725,7 +1784,7 @@ section#about::before {
 
 /* ===== Footer ===== */
 .site-footer {
-    background: var(--ink);
+    background: var(--surface-strong);
     color: rgba(255, 255, 255, 0.7);
     padding: 60px 6% 30px;
     margin-top: 80px;
@@ -1885,3 +1944,137 @@ section#about::before {
     }
 }
 
+/* ===== THEME TOGGLE (segmented light / system / dark) ===== */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    flex-shrink: 0;
+}
+.theme-toggle button {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.55);
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    padding: 0;
+    transition: all var(--transition-fast);
+}
+.theme-toggle button:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+.theme-toggle button[aria-checked="true"] {
+    background: var(--accent-color);
+    color: #0F0B1F;
+    box-shadow: 0 1px 4px rgba(245, 158, 11, 0.35);
+}
+.theme-toggle button:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Adjustment for the toggle on dark theme (slightly more subtle bg) */
+:root[data-theme="dark"] .theme-toggle {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ===== DARK-MODE FINE-TUNING (visual edge cases the variable swap can't handle alone) ===== */
+
+/* Big watermark project number — bump opacity so it's still legible against the dark card */
+:root[data-theme="dark"] .project::before {
+    color: rgba(245, 241, 255, 0.05);
+}
+:root[data-theme="dark"] .project:hover::before {
+    color: rgba(245, 158, 11, 0.4);
+}
+
+/* Single-color brand icons (Apple silhouette, GitHub octocat, Django plain) disappear on dark.
+   Invert them so they remain legible. */
+:root[data-theme="dark"] .skill-icon img[src*="simple-icons"],
+:root[data-theme="dark"] .skill-icon img[src*="github-original"],
+:root[data-theme="dark"] .skill-icon img[src*="django-plain"] {
+    filter: invert(0.92);
+}
+
+/* Tech-tag hover — use a slightly bolder amber tint in dark mode */
+:root[data-theme="dark"] .tech-tag:hover {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* Stats divider line above the row */
+:root[data-theme="dark"] .profile-stats {
+    border-top-color: var(--border-strong);
+}
+
+/* Availability pill — let the dark surface show through with a softer border */
+:root[data-theme="dark"] .availability-pill {
+    background: var(--surface);
+    border-color: var(--border-strong);
+    color: var(--text-color);
+}
+
+/* Modal overlay — the modal-content card needs the themed surface */
+:root[data-theme="dark"] .modal-content {
+    background: var(--surface);
+    color: var(--text-color);
+}
+:root[data-theme="dark"] .modal-content h3 {
+    color: var(--ink);
+}
+:root[data-theme="dark"] .close-modal {
+    color: var(--text-muted);
+}
+:root[data-theme="dark"] .close-modal:hover {
+    color: var(--text-color);
+}
+
+/* Footer text inherits a slightly cooler tone on dark to avoid the same-ish hue */
+:root[data-theme="dark"] .site-footer {
+    color: rgba(245, 241, 255, 0.7);
+}
+
+/* Recommendation form inputs already use rgba whites, but on the form's dark surface in dark mode
+   we can lean into the amber focus a touch more */
+:root[data-theme="dark"] .form-group input,
+:root[data-theme="dark"] .form-group textarea {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Toggle responsive — collapse to icons-only at narrow widths is already the default,
+   but make sure it wraps below the nav on small screens */
+@media (max-width: 768px) {
+    .header-right {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 12px;
+        justify-content: space-between;
+    }
+    .theme-toggle {
+        margin-left: auto;
+    }
+}
+@media (max-width: 480px) {
+    .header-right {
+        justify-content: flex-start;
+    }
+}
