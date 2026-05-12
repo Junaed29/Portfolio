@@ -1,134 +1,193 @@
-# Professional Portfolio Website
+# Portfolio Website
 
-A fully responsive, modular, and interactive portfolio website showcasing professional skills, projects, and recommendations. The website is designed with a focus on clean code organization, extensive commenting for educational purposes, and modern UI/UX principles.
+Personal portfolio site for **Junaed Muhammad Chowdhury**, mobile engineer based in Kuala Lumpur. 5+ years across native iOS (Swift / SwiftUI), native Android (Kotlin / Jetpack Compose), and cross-platform Flutter, now extending into on-device AI/ML.
 
-## Features
+> **Live:** [junaed.pro.bd](https://junaed.pro.bd)
+>
+> **GitHub Pages backup:** [junaed29.github.io/portfolio-website](https://junaed29.github.io/portfolio-website/)
 
-1. **Header Section**
-   - Styled name at the top-left of the page
-   - Contact information (email and phone)
-   - Navigation bar with 4 options (About, Skills, Projects, and Recommendations) with hover effects
+---
 
-2. **About Me Section**
-   - Professional profile image
-   - Personal introduction with animated wave emoji
-   - Detailed professional biography
+## What's on the site
 
-3. **Skills Section**
-   - Visual representation of technical skills with icons
-   - Experience level for each skill
-   - Clean, card-based layout with icons from CDN
+A single-page portfolio with five sections:
 
-4. **Projects Section**
-   - Showcase of professional projects
-   - Each project includes title and detailed description
-   - Visually appealing card layout
+1. **Hero / About** with availability status, statement greeting, and magazine-style stats (years, GPA, releases, apps).
+2. **Skills** grouped by category (iOS, Android, Cross-platform, AI/ML, Backend, DevOps).
+3. **Projects** as numbered case-study cards, each with tech tags and live App Store / GitHub / demo links.
+4. **Education** as a vertical timeline (M.Sc. UTM at 4.00 GPA, B.Sc. BAUET).
+5. **Recommendations** of curated testimonials plus a working contact form that emails me directly.
 
-5. **Recommendations Section**
-   - Display of testimonials from colleagues/clients
-   - Interactive form to add new recommendations
-   - Confirmation dialog after submitting recommendations
+Other UX details:
 
-6. **UI/UX Enhancements**
-   - Smooth scroll animations
-   - Back-to-top button with fixed positioning
-   - Fade-in animations when scrolling through sections
-   - Active section highlighting in navigation
-   - Mobile-responsive design
+- Three-state theme toggle (Light / System / Dark) with no flash on first paint and live OS-theme sync while on "System".
+- Sticky header with amber accent stripe, smooth scroll, back-to-top button, animated section reveals.
+- Fully responsive, keyboard-navigable, accessible focus states.
+- Custom favicon and proper Open Graph metadata so link previews look right when shared.
 
-## Technologies Used
+No build step. Open `index.html` directly in a browser, or push to GitHub Pages.
 
-- **HTML5** - Semantic markup structure
-- **CSS3** - Modern styling with CSS variables and flexbox layout
-- **JavaScript (Vanilla)** - Modular JS architecture without frameworks
-- **Font Awesome** - Icon library for UI elements (loaded from CDN)
-- **Devicon** - Technology icons for skills section (loaded from CDN)
-- **Intersection Observer API** - For scroll-based animations
-- **External Resources** - LinkedIn profile image and CDN-hosted icons
+---
 
-## Modular Architecture
+## Stack
 
-The website uses a modular JavaScript approach for better organization and maintainability:
+| Layer       | Tech                                                                                    |
+|-------------|-----------------------------------------------------------------------------------------|
+| Markup      | HTML5                                                                                   |
+| Styling     | CSS3 with custom properties; theme tokens flip on `[data-theme="dark"]`                 |
+| Behavior    | Vanilla JavaScript modules, no bundler, no npm install                                  |
+| Typography  | Google Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (numbers + labels)  |
+| Icons       | Font Awesome 6 (Font Awesome CDN), Devicon (brand logos via jsDelivr)                   |
+| Form        | Web3Forms (submissions land in my inbox at junaed.dev@gmail.com)                        |
+| Hosting     | GitHub Pages with a custom `.pro.bd` domain                                             |
+| HTTPS       | Let's Encrypt certificate auto-issued by GitHub Pages                                   |
 
-- `profile.js` - Manages personal information and profile data
-- `skills.js` - Handles the skills section with technology data
-- `projects.js` - Manages project portfolio information
-- `recommendations.js` - Controls testimonials and the recommendation form
-- `animations.js` - Implements all UI animations and interactions
-- `script.js` - Main entry point that orchestrates all modules
+---
 
-## Usage
-
-Simply open the `index.html` file in a web browser to view the portfolio website.
-
-## Project Structure
+## Project structure
 
 ```
-portfolio_website_commented/
-├── index.html           # Main HTML document with extensive comments
+portfolio-website/
+├── CNAME                  # GitHub Pages custom-domain config (junaed.pro.bd)
+├── index.html             # Page structure + inline theme-bootstrap script (prevents FOUC)
+├── assets/
+│   ├── profile.jpeg       # Hero profile picture
+│   └── favicon.svg        # Ink-dark square with amber "J"
 ├── css/
-│   └── styles.css       # Well-organized CSS with variables and comments
+│   └── styles.css         # All styling. Theme tokens live at the top of :root.
 └── js/
-    ├── animations.js    # Scroll animations and UI interactions
-    ├── profile.js       # Personal profile information (uses external image URL)
-    ├── projects.js      # Project portfolio data
-    ├── recommendations.js # Testimonials and form handling
-    ├── script.js        # Main application entry point
-    └── skills.js        # Skills data and display logic (uses CDN for icons)
+    ├── theme.js           # Three-state theme controller (persists to localStorage)
+    ├── profile.js         # profileData object: bio, contact, stats, availability
+    ├── skills.js          # skillsData array: name, experience, category, iconUrl
+    ├── projects.js        # projectsData array: title, tagline, type, description, tech, links
+    ├── recommendations.js # initialRecommendations array + Web3Forms POST flow
+    ├── animations.js      # IntersectionObserver fade-ins, smooth scroll, back-to-top
+    └── script.js          # DOMContentLoaded entry point
 ```
 
-## Responsive Design
+---
 
-The website is fully responsive and works well on all devices:
-- **Desktop** - Full-featured layout
-- **Tablet** - Adapted layout with preserved functionality
-- **Mobile** - Optimized for smaller screens with maintained usability
+## Editing content
 
-## Customization
+All content lives in plain JavaScript data objects. No CMS, no build step.
 
-### Profile Information
-To update personal details, edit the `profileData` object in `profile.js`:
+### Profile
+
+Edit `profileData` in [js/profile.js](js/profile.js):
+
 ```javascript
 const profileData = {
     name: "Your Name",
-    title: "Your Title",
-    image: "path/to/image.jpg",
-    description: "Your bio here",
-    email: "your.email@example.com",
-    phone: "Your Phone Number"
+    title: "Your title or stack summary",
+    tagline: "One-line punchy statement under the greeting",
+    description: "Longer bio paragraph",
+    email: "you@example.com",
+    phone: "+xx ...",
+    location: "City, Country",
+    linkedin: "https://linkedin.com/in/...",
+    github: "https://github.com/...",
+    availability: "Open to roles ...",
+    image: "assets/profile.jpeg",
+    stats: [
+        { value: "5+", label: "Years in mobile" },
+        // up to 4 stats look best
+    ]
 };
 ```
 
 ### Skills
-To add new skills, edit the `skillsData` array in `skills.js`:
+
+Edit `skillsData` in [js/skills.js](js/skills.js):
+
 ```javascript
-const skillsData = [
-    { 
-        name: "Skill Name", 
-        experience: "Experience level",
-        iconUrl: "URL to skill icon"
-    },
-    // Add more skills here
-];
+{
+    name: "Swift",
+    experience: "5+ years",
+    category: "iOS",
+    iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg"
+}
 ```
 
 ### Projects
-To add new projects, edit the `projectsData` array in `projects.js`:
+
+Edit `projectsData` in [js/projects.js](js/projects.js):
+
 ```javascript
-const projectsData = [
-    {
-        title: "Project Title",
-        description: "Detailed project description"
-    },
-    // Add more projects here
-];
+{
+    title: "MediVault AI",
+    tagline: "Privacy-first on-device medical RAG",
+    type: "Personal flagship / open source",
+    description: "Longer paragraph describing scope and impact.",
+    tech: ["Swift", "SwiftUI", "llama.cpp", "Core ML"],
+    links: [
+        { label: "GitHub",    url: "https://github.com/...",  icon: "fab fa-github" },
+        { label: "App Store", url: "https://apps.apple.com/...", icon: "fab fa-app-store-ios" }
+    ]
+}
 ```
 
-## Educational Value
+### Recommendations
 
-This project includes extensive commenting throughout the codebase, making it an excellent learning resource for:
-- Modular JavaScript organization
-- Clean HTML structure
-- CSS best practices
-- Modern web animations
-- Form handling
+The visible recommendation cards are curated and live in `initialRecommendations` inside [js/recommendations.js](js/recommendations.js). The form on the page submits to Web3Forms and emails the message; it does not auto-append a card to the curated list. To promote a real submission to the visible grid, add a new entry to the array by hand.
+
+---
+
+## Theme system
+
+Three themes: Light, System (follows the OS), Dark. Implementation notes:
+
+- The toggle is a segmented `radiogroup` in the header (sun / monitor / moon).
+- User choice persists to `localStorage["theme"]`.
+- An inline script in `<head>` resolves the saved choice and sets `data-theme="dark"` on `<html>` before the body paints, so dark-mode users never see a light flash.
+- A `matchMedia` listener keeps the rendered theme in sync with the OS while "System" is selected.
+
+CSS variable layout:
+
+- `:root` holds light-theme defaults.
+- `:root[data-theme="dark"]` overrides them for dark mode.
+- Two semantic groups of tokens:
+  - **Flipping tokens** like `--ink` and `--text-on-ink` intentionally swap between modes so headings stay high-contrast and the primary CTA inverts (dark button in light mode, light button in dark mode).
+  - **Static-dark tokens** like `--surface-strong` stay dark in both modes so the header, footer, and "Leave a Recommendation" form keep their grounding aesthetic.
+
+Change a brand color by editing the variables at the top of [css/styles.css](css/styles.css).
+
+---
+
+## Recommendation form (Web3Forms)
+
+The form POSTs JSON to `https://api.web3forms.com/submit` with a public access key. A honeypot field (`botcheck`, off-screen via CSS) silently rejects automated form-fillers. The access key is public by design; Web3Forms validates each request against the allowed-domain list configured in the dashboard, not by key secrecy.
+
+To swap to your own Web3Forms account, replace `WEB3FORMS_ACCESS_KEY` near the top of [js/recommendations.js](js/recommendations.js) with your key, and add your domain in the Web3Forms dashboard.
+
+---
+
+## Local development
+
+```bash
+# Simplest
+open index.html
+
+# Or run a static server (so relative paths behave like production)
+python3 -m http.server 8000
+# then visit http://localhost:8000
+```
+
+No install step, no build step, no watcher.
+
+---
+
+## Deployment
+
+Hosted on GitHub Pages. Pushing to `main` triggers an automatic redeploy in about a minute.
+
+The custom domain `junaed.pro.bd` is configured via:
+
+- **DNS:** four `A` records on the apex pointing to GitHub Pages load balancers (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`), and a `CNAME` on `www` to `junaed29.github.io`.
+- **Repo:** a `CNAME` file in the root containing `junaed.pro.bd` (auto-created by GitHub when the custom domain was set; do not delete it).
+- **Repo settings:** Settings → Pages → Custom domain = `junaed.pro.bd`, Enforce HTTPS enabled.
+
+---
+
+## License
+
+Source code: MIT. Content (bio, projects, photos, recommendations) is mine. Please feel free to fork the structure and patterns for your own portfolio, but replace the content with your own.
