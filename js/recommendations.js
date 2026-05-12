@@ -21,6 +21,12 @@
 
 console.log('Recommendations.js loaded'); // DEBUG LOG
 
+// Web3Forms endpoint configuration. The access key is a public, throwaway identifier
+// (Web3Forms validates the request against the access key + allowed domain set in the dashboard).
+// Submissions land in junaed.dev@gmail.com.
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_ACCESS_KEY = '30e1a2da-07a1-458e-b2f2-d1d0f1136cfc';
+
 // Initial recommendation data
 // This is an array of objects, where each object represents one recommendation
 // Each recommendation has:
@@ -363,60 +369,145 @@ function showThankYouModal() {
 }
 
 /**
- * Adds a new recommendation to the page
- * 
- * @param {string} name - The name of the person giving the recommendation
- * @param {string} message - The recommendation message
- * 
- * WHAT THIS FUNCTION DOES:
- * 1. Creates a new recommendation card
- * 2. Adds the message and name to the card
- * 3. Adds the card to the recommendations container
- * 4. Animates the card appearing with a fade-in effect
- * 5. Resets the form inputs
- * 6. Shows a thank you message to the user
+ * Submits a new recommendation to Web3Forms, then (on success) adds it to the page.
+ *
+ * Flow:
+ *   1. Disable the submit button so the user cannot double-fire while the request is in flight.
+ *   2. POST { access_key, name, message, subject, from_name, botcheck } to Web3Forms.
+ *   3. On success: append the card to the DOM, reset the form, show the thank-you modal.
+ *   4. On failure (network error, invalid key, spam-rejected): show the error modal.
+ *   5. Always re-enable the submit button at the end.
+ *
+ * @param {string} name - Optional name from the form
+ * @param {string} message - The recommendation text
  */
-function addRecommendation(name, message) {
-    // STEP 1: Create new recommendation card
-    const newRecommendation = document.createElement('div');
-    newRecommendation.className = 'recommendation-card';
-    // Start with animation initial state (invisible and slightly below final position)
-    newRecommendation.style.opacity = '0';
-    newRecommendation.style.transform = 'translateY(20px)';
-    
-    // STEP 2: Create blockquote with the submitted message
-    const blockquote = document.createElement('blockquote');
-    blockquote.textContent = `"${message}"`;
-    
-    // STEP 3: If name was provided, add it to the blockquote
-    if (name.trim() !== '') {
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'recommender-name';
-        nameSpan.textContent = ` - ${name}`;
-        blockquote.appendChild(nameSpan);
+async function addRecommendation(name, message) {
+    const form = document.getElementById('recommendationForm');
+    const submitButton = form ? form.querySelector('.btn-submit') : null;
+    const botcheck = form ? form.querySelector('.botcheck') : null;
+    const originalSubmitText = submitButton ? submitButton.textContent : 'Submit';
+    const cleanName = (name || '').trim();
+    const displayName = cleanName !== '' ? cleanName : 'Anonymous';
+
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending…';
     }
-    
-    // STEP 4: Append the blockquote to the new recommendation card
-    newRecommendation.appendChild(blockquote);
-    
-    // STEP 5: Get recommendations container and append new recommendation
-    const recommendationsContainer = document.querySelector('.recommendations-container');
-    recommendationsContainer.appendChild(newRecommendation);
-    
-    // STEP 6: Animate the new card after a brief delay
-    // This creates a smooth fade-in and slide-up animation
-    setTimeout(() => {
-        newRecommendation.style.transition = 'all 0.5s ease-out';
-        newRecommendation.style.opacity = '1';
-        newRecommendation.style.transform = 'translateY(0)';
-    }, 50);
-    
-    // STEP 7: Reset form inputs
-    // This clears the form so the user can add another recommendation
-    document.getElementById('recommendationForm').reset();
-    
-    // STEP 8: Show thank you modal
-    showThankYouModal();
+
+    try {
+        const response = await fetch(WEB3FORMS_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                access_key: WEB3FORMS_ACCESS_KEY,
+                subject: `New portfolio recommendation from ${displayName}`,
+                from_name: displayName,
+                name: displayName,
+                message: message,
+                botcheck: botcheck && botcheck.checked ? 'true' : ''
+            })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message || `Web3Forms returned status ${response.status}`);
+        }
+
+        // === SUCCESS PATH ===
+
+        // Append the new card to the DOM
+        const newRecommendation = document.createElement('div');
+        newRecommendation.className = 'recommendation-card';
+        newRecommendation.style.opacity = '0';
+        newRecommendation.style.transform = 'translateY(20px)';
+
+        const blockquote = document.createElement('blockquote');
+        blockquote.textContent = `"${message}"`;
+
+        if (cleanName !== '') {
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'recommender-name';
+            nameSpan.textContent = ` - ${cleanName}`;
+            blockquote.appendChild(nameSpan);
+        }
+        newRecommendation.appendChild(blockquote);
+
+        const recommendationsContainer = document.querySelector('.recommendations-container');
+        recommendationsContainer.appendChild(newRecommendation);
+
+        setTimeout(() => {
+            newRecommendation.style.transition = 'all 0.5s ease-out';
+            newRecommendation.style.opacity = '1';
+            newRecommendation.style.transform = 'translateY(0)';
+        }, 50);
+
+        if (form) form.reset();
+        showThankYouModal();
+    } catch (err) {
+        console.error('Recommendation submission failed:', err);
+        showErrorModal(err && err.message ? err.message : 'Network error');
+    } finally {
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalSubmitText;
+        }
+    }
+}
+
+/**
+ * Shows an error modal when the Web3Forms submission fails. Mirrors the
+ * thank-you modal layout so the UX stays consistent.
+ */
+function showErrorModal(errorDetail) {
+    let modal = document.getElementById('errorModal');
+
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'errorModal';
+        modal.className = 'modal';
+
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+
+        const closeBtn = document.createElement('span');
+        closeBtn.className = 'close-modal';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.addEventListener('click', function() { closeModal(modal); });
+
+        const modalTitle = document.createElement('h3');
+        modalTitle.textContent = 'Couldn\'t send';
+
+        const modalText = document.createElement('p');
+        modalText.className = 'error-modal-text';
+
+        const okButton = document.createElement('button');
+        okButton.className = 'modal-button';
+        okButton.textContent = 'Try again';
+        okButton.addEventListener('click', function() { closeModal(modal); });
+
+        modalContent.appendChild(closeBtn);
+        modalContent.appendChild(modalTitle);
+        modalContent.appendChild(modalText);
+        modalContent.appendChild(okButton);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+    }
+
+    const detailEl = modal.querySelector('.error-modal-text');
+    if (detailEl) {
+        detailEl.textContent = 'Something went wrong while delivering your recommendation. Please check your connection and try again.' + (errorDetail ? ` (Details: ${errorDetail})` : '');
+    }
+
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('visible'), 10);
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) closeModal(modal);
+    });
 }
 
 // Make the functions available globally so they can be called from other scripts

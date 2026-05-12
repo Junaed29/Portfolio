@@ -1944,6 +1944,17 @@ section#about::before {
     }
 }
 
+/* Honeypot field — bots fill it, humans never see it. Off-screen rather than display:none
+   because some bots ignore display:none and only fill visible-by-flow fields. */
+.botcheck {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* ===== THEME TOGGLE (segmented light / system / dark) ===== */
 .header-right {
     display: flex;
