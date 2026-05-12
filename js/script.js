@@ -62,7 +62,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // STEP 8: Check if styles are properly loaded
     checkStylesLoaded();
-    
+
+    // STEP 9: Footer year
+    const footerYearEl = document.querySelector('.footer-year');
+    if (footerYearEl) footerYearEl.textContent = new Date().getFullYear();
+
     // This message will appear in the browser's console when everything is ready
     console.log('Portfolio application initialized successfully!');
 });
