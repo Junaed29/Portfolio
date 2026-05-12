@@ -418,33 +418,11 @@ async function addRecommendation(name, message) {
         }
 
         // === SUCCESS PATH ===
-
-        // Append the new card to the DOM
-        const newRecommendation = document.createElement('div');
-        newRecommendation.className = 'recommendation-card';
-        newRecommendation.style.opacity = '0';
-        newRecommendation.style.transform = 'translateY(20px)';
-
-        const blockquote = document.createElement('blockquote');
-        blockquote.textContent = `"${message}"`;
-
-        if (cleanName !== '') {
-            const nameSpan = document.createElement('span');
-            nameSpan.className = 'recommender-name';
-            nameSpan.textContent = ` - ${cleanName}`;
-            blockquote.appendChild(nameSpan);
-        }
-        newRecommendation.appendChild(blockquote);
-
-        const recommendationsContainer = document.querySelector('.recommendations-container');
-        recommendationsContainer.appendChild(newRecommendation);
-
-        setTimeout(() => {
-            newRecommendation.style.transition = 'all 0.5s ease-out';
-            newRecommendation.style.opacity = '1';
-            newRecommendation.style.transform = 'translateY(0)';
-        }, 50);
-
+        // The email is delivered to junaed.dev@gmail.com via Web3Forms.
+        // We intentionally do NOT render a temporary card in the recommendations list,
+        // because that card would disappear on the next refresh and confuse the submitter
+        // into thinking their message had been "lost". Only persistent recommendations
+        // (curated and hard-coded in `initialRecommendations`) belong in the visible list.
         if (form) form.reset();
         showThankYouModal();
     } catch (err) {
