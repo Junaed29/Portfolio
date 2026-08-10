@@ -8,6 +8,16 @@
 
 const projectsData = [
     {
+        title: "iSPEED.my",
+        tagline: "Objective-C to SwiftUI rewrite of a multi-market trading app",
+        type: "Rakuten Trade / current role",
+        description: "Rakuten Trade's retail stock trading app for the Malaysian, US and Hong Kong markets. I was the sole engineer on the full SwiftUI rewrite: 163 screens migrated off a 649-file Objective-C codebase in one month using AI-assisted development. Rebuilt on The Composable Architecture with a locked design-token system, decomposing a 100-property legacy singleton and replacing a closed-source OpenGL chart engine with DGCharts. Shipped to production after QA regression sign-off, holding pixel-perfect UI and behavior parity with the legacy app throughout.",
+        tech: ["Swift", "SwiftUI", "Objective-C", "TCA", "DGCharts", "Design tokens"],
+        links: [
+            { label: "App Store", url: "https://apps.apple.com/my/app/ispeed-my-stock-trading-app/id1225498084", icon: "fab fa-app-store-ios" }
+        ]
+    },
+    {
         title: "MediVault AI",
         tagline: "Privacy-first on-device medical RAG",
         type: "Personal flagship / open source",
@@ -18,13 +28,14 @@ const projectsData = [
         ]
     },
     {
-        title: "PilgrimPro",
+        title: "Ummah Mobility",
         tagline: "Flutter app for Umrah and Hajj travel",
-        type: "Theta Edge Berhad / current",
-        description: "Cross-platform pilgrimage companion built in Flutter with a PHP/Laravel backend. As one of three mobile developers on the product team I am building booking, document upload, and trip management flows, integrating Senangpay payments through a hosted WebView, and I designed the team's GitHub Actions CI/CD workflow. Live on the App Store (pre-release).",
-        tech: ["Flutter", "Dart", "PHP", "Laravel", "GitHub Actions", "Senangpay"],
+        type: "Theta Edge Berhad / 2026",
+        description: "Cross-platform pilgrimage companion built in Flutter. As one of three mobile developers on a 5-person product team I owned features from requirement through to public release, shipped the Senangpay payment flow through a hosted WebView checkout, built an offline-first data layer with a SQLite outbox that queued writes offline and drained them on reconnect, and designed the team's GitHub Actions workflow that auto-deploys the Laravel API to Azure. Live on the App Store and Google Play. It shipped under the name PilgrimPro and was renamed later.",
+        tech: ["Flutter", "Dart", "Provider", "sqflite", "GitHub Actions", "Senangpay"],
         links: [
-            { label: "App Store", url: "https://apps.apple.com/us/app/pilgrimpro/id6743296193", icon: "fab fa-app-store-ios" }
+            { label: "App Store", url: "https://apps.apple.com/en/app/ummah-mobility/id6743296193", icon: "fab fa-app-store-ios" },
+            { label: "Google Play", url: "https://play.google.com/store/apps/details?id=com.thetaedge.app.pilgrimpro", icon: "fab fa-google-play" }
         ]
     },
     {
