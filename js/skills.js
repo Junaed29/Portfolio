@@ -14,6 +14,18 @@ const skillsData = [
         iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg"
     },
     {
+        name: "Objective-C",
+        experience: "Migrated 163 screens off it",
+        category: "iOS",
+        iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/objectivec/objectivec-plain.svg"
+    },
+    {
+        name: "TCA",
+        experience: "iSPEED.my rewrite",
+        category: "iOS",
+        iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swift/swift-original.svg"
+    },
+    {
         name: "SwiftUI",
         experience: "3 years",
         category: "iOS",
@@ -61,13 +73,13 @@ const skillsData = [
     // Cross-platform
     {
         name: "Flutter",
-        experience: "Current at Theta Edge",
+        experience: "Shipped Ummah Mobility",
         category: "Cross-platform",
         iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg"
     },
     {
         name: "Dart",
-        experience: "Current",
+        experience: "Shipped Ummah Mobility",
         category: "Cross-platform",
         iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg"
     },
@@ -95,7 +107,7 @@ const skillsData = [
     },
     {
         name: "PHP / Laravel",
-        experience: "Current at Theta Edge",
+        experience: "Theta Edge backend",
         category: "Backend",
         iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-plain.svg"
     },
@@ -109,7 +121,7 @@ const skillsData = [
     },
     {
         name: "GitHub Actions",
-        experience: "Designed Theta Edge workflow",
+        experience: "Designed Theta Edge pipeline",
         category: "DevOps",
         iconUrl: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg"
     },

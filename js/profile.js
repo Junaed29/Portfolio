@@ -7,20 +7,21 @@
 
 const profileData = {
     name: "Junaed Muhammad Chowdhury",
-    title: "Mobile Engineer / iOS / Android / Flutter / On-Device AI",
+    title: "Senior iOS Developer / iOS / Android / Flutter / On-Device AI",
     image: "assets/profile.jpeg",
-    tagline: "Mobile engineer with 5+ years across native iOS, native Android, and cross-platform Flutter, now extending into on-device AI/ML. Available for mid-to-senior, remote-global roles.",
-    description: "I build polished, production-grade mobile apps and the on-device intelligence that makes them feel magical. Over 5+ years I have shipped native iOS (Swift / SwiftUI / SwiftData), native Android (Kotlin / Jetpack Compose), and cross-platform Flutter, owned full Play Store releases across 4 production apps (30+ releases), and mentored 2 junior iOS developers while reviewing up to 15-20 pull requests per week. Currently building PilgrimPro at Theta Edge Berhad (Flutter + PHP/Laravel + GitHub Actions) while completing an M.Sc. Software Engineering at UTM with a perfect 4.00 / 4.00 GPA. My flagship MediVault AI runs a Qwen 2.5 LLM on-device at ~22 tokens/sec via llama.cpp Metal, with a Core ML embedder and on-device RAG over private medical documents.",
+    tagline: "Senior iOS Developer with 5+ years across native iOS, native Android, and cross-platform Flutter, with real depth in on-device AI/ML.",
+    description: "I build polished, production-grade mobile apps and the on-device intelligence that makes them feel magical. Over 5+ years I have shipped native iOS (Swift / SwiftUI / SwiftData), native Android (Kotlin / Jetpack Compose), and cross-platform Flutter, owned full Play Store releases across 4 production apps (30+ releases), and mentored 2 junior iOS developers while reviewing 15 to 20 pull requests per week at peak. I am now Senior iOS Developer at Rakuten Trade, where I was the sole engineer on the SwiftUI rewrite of iSPEED.my, their multi-market stock trading app: 163 screens off a 649-file Objective-C codebase, rebuilt on The Composable Architecture. Alongside that I am completing an M.Sc. Software Engineering at UTM with a perfect 4.00 / 4.00 GPA. My flagship MediVault AI runs a Qwen 2.5 LLM on-device at ~22 tokens/sec via llama.cpp Metal, with a Core ML embedder and on-device RAG over private medical documents.",
     email: "junaed.dev@gmail.com",
     phone: "+60 11-3971 4017",
     location: "Kuala Lumpur, Malaysia",
     linkedin: "https://linkedin.com/in/junaed29",
     github: "https://github.com/Junaed29",
-    availability: "Open to mid-to-senior roles. Remote-global, Australia, Germany.",
+    resume: "assets/Junaed-Mobile-Engineer.pdf",
+    availability: "Senior iOS Developer at Rakuten Trade. Kuala Lumpur, Malaysia.",
     stats: [
         { value: "5+", label: "Years in mobile" },
         { value: "4.00", label: "M.Sc. CGPA (UTM)" },
-        { value: "30+", label: "Updates shipped (4 apps)" },
+        { value: "163", label: "Screens rewritten in SwiftUI" },
         { value: "4", label: "Apps live on App Store" }
     ]
 };
@@ -85,6 +86,8 @@ function initializeProfile() {
     if (ctaGitHub) ctaGitHub.href = profileData.github;
     const ctaEmail = document.querySelector('.profile-cta .cta-email');
     if (ctaEmail) ctaEmail.href = `mailto:${profileData.email}`;
+    const ctaResume = document.querySelector('.profile-cta .cta-resume');
+    if (ctaResume) ctaResume.href = profileData.resume;
 
     const statsContainer = document.querySelector('.profile-stats');
     if (statsContainer) {
